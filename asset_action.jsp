@@ -136,12 +136,22 @@
                     ps.executeUpdate();
                 }
                 // close the most recent open allocation for this asset
+                Integer allocationId = null;
                 try (PreparedStatement ps = con.prepareStatement(
-                        "UPDATE asset_allocations SET return_date = CURDATE() " +
+                        "SELECT allocation_id FROM asset_allocations " +
                         "WHERE asset_id = ? AND return_date IS NULL " +
                         "ORDER BY issue_date DESC LIMIT 1")) {
                     ps.setString(1, assetId);
-                    ps.executeUpdate();
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) allocationId = rs.getInt("allocation_id");
+                    }
+                }
+                if (allocationId != null) {
+                    try (PreparedStatement ps = con.prepareStatement(
+                            "UPDATE asset_allocations SET return_date = CURRENT_DATE WHERE allocation_id = ?")) {
+                        ps.setInt(1, allocationId);
+                        ps.executeUpdate();
+                    }
                 }
                 audit(con, username, "RETURN", "ASSET", assetId, "Asset returned and marked Available");
                 redirect = "assets.jsp?flash=returned";

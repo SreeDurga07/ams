@@ -63,7 +63,7 @@
                 boolean nowCompleted = "Completed".equals(status);
 
                 String sql = "UPDATE maintenance SET issue_reported=?, service_date=?, vendor_id=?, cost=?, status=?, remarks=?" +
-                              (nowCompleted ? ", completed_date=COALESCE(completed_date, CURDATE())" : ", completed_date=NULL") +
+                              (nowCompleted ? ", completed_date=COALESCE(completed_date, CURRENT_DATE)" : ", completed_date=NULL") +
                               " WHERE maintenance_id=?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, issue);
@@ -88,7 +88,7 @@
                 String assetId = null;
 
                 try (PreparedStatement ps = con.prepareStatement(
-                        "UPDATE maintenance SET status='Completed', completed_date=CURDATE() WHERE maintenance_id=?")) {
+                        "UPDATE maintenance SET status='Completed', completed_date=CURRENT_DATE WHERE maintenance_id=?")) {
                     ps.setInt(1, Integer.parseInt(maintenanceId));
                     ps.executeUpdate();
                 }

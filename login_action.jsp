@@ -42,7 +42,7 @@
 
                 // update last login
                 try (PreparedStatement up = con.prepareStatement(
-                        "UPDATE users SET last_login = NOW() WHERE user_id = ?")) {
+                        "UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE user_id = ?")) {
                     up.setInt(1, rs.getInt("user_id"));
                     up.executeUpdate();
                 }

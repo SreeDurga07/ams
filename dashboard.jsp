@@ -34,9 +34,11 @@
         // Expired / soon-to-expire warranty count (within 60 days, excluding disposed)
         try (PreparedStatement ps = con.prepareStatement(
                 "SELECT COUNT(*) c FROM assets WHERE warranty_expiry IS NOT NULL " +
-                "AND warranty_expiry <= DATE_ADD(CURDATE(), INTERVAL 60 DAY) AND status <> 'Disposed'");
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) expiredWarranty = rs.getInt("c");
+                "AND warranty_expiry <= ? AND status <> 'Disposed'")) {
+            ps.setDate(1, new java.sql.Date(System.currentTimeMillis() + 60L * 24L * 60L * 60L * 1000L));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) expiredWarranty = rs.getInt("c");
+            }
         }
 
         // Category breakdown
@@ -74,15 +76,17 @@
         try (PreparedStatement ps = con.prepareStatement(
                 "SELECT asset_id, asset_name, warranty_expiry FROM assets " +
                 "WHERE warranty_expiry IS NOT NULL AND status <> 'Disposed' " +
-                "AND warranty_expiry <= DATE_ADD(CURDATE(), INTERVAL 60 DAY) " +
-                "ORDER BY warranty_expiry ASC LIMIT 5");
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Map<String,Object> row = new HashMap<>();
-                row.put("asset_id", rs.getString("asset_id"));
-                row.put("asset_name", rs.getString("asset_name"));
-                row.put("warranty_expiry", rs.getDate("warranty_expiry"));
-                warrantyWatch.add(row);
+                "AND warranty_expiry <= ? " +
+                "ORDER BY warranty_expiry ASC LIMIT 5")) {
+            ps.setDate(1, new java.sql.Date(System.currentTimeMillis() + 60L * 24L * 60L * 60L * 1000L));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String,Object> row = new HashMap<>();
+                    row.put("asset_id", rs.getString("asset_id"));
+                    row.put("asset_name", rs.getString("asset_name"));
+                    row.put("warranty_expiry", rs.getDate("warranty_expiry"));
+                    warrantyWatch.add(row);
+                }
             }
         }
 

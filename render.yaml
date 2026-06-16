@@ -1,10 +1,12 @@
-services:
-  # PostgreSQL Database Service
-  - type: pgsql
-    name: ams-db
+databases:
+  # Render Postgres instance
+  - name: ams-db
     plan: free
+    databaseName: ams_db
+    user: ams_user
 
-  # Tomcat Application Service
+services:
+  # Tomcat application service using Docker
   - type: web
     name: ams-app
     runtime: docker
@@ -12,8 +14,10 @@ services:
     healthCheckPath: /
     envVars:
       - key: DATABASE_URL
-        fromService:
+        fromDatabase:
           name: ams-db
-          type: pgsql
+          property: connectionString
       - key: PORT
-        value: 8080
+        value: "8080"
+      - key: DB_INIT
+        value: "true"
