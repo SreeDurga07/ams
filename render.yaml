@@ -1,9 +1,8 @@
 services:
-  # PostgreSQL Database Service (Render-supported)
+  # PostgreSQL Database Service
   - type: pgsql
     name: ams-db
     plan: free
-    ipAllowList: [] # Managed by Render
 
   # Tomcat Application Service
   - type: web
@@ -11,28 +10,10 @@ services:
     runtime: docker
     plan: free
     healthCheckPath: /
-    numInstances: 1
     envVars:
-      - key: DB_DRIVER
-        value: org.postgresql.Driver
-      - key: DB_URL
+      - key: DATABASE_URL
         fromService:
           name: ams-db
           type: pgsql
-          envVarKey: DATABASE_URL
-          property: connectionString
-        # Format: jdbc:postgresql://host:port/database
-      - key: DB_USER
-        fromService:
-          name: ams-db
-          type: pgsql
-          envVarKey: DATABASE_USER
-          property: user
-      - key: DB_PASSWORD
-        fromService:
-          name: ams-db
-          type: pgsql
-          envVarKey: DATABASE_PASSWORD
-          property: password
       - key: PORT
         value: 8080
