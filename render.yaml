@@ -1,0 +1,39 @@
+services:
+  # MySQL Database Service
+  - type: mysql
+    name: ams-db
+    plan: free
+    ipAllowList: [] # Managed by Render
+    maxConnections: 10
+
+  # Tomcat Application Service
+  - type: web
+    name: ams-app
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    numInstances: 1
+    envVars:
+      - key: DB_DRIVER
+        value: com.mysql.cj.jdbc.Driver
+      - key: DB_URL
+        fromService:
+          name: ams-db
+          type: mysql
+          envVarKey: MYSQL_URL
+          property: connectionString
+        # Format: jdbc:mysql://host:port/database
+      - key: DB_USER
+        fromService:
+          name: ams-db
+          type: mysql
+          envVarKey: MYSQL_USER
+          property: user
+      - key: DB_PASSWORD
+        fromService:
+          name: ams-db
+          type: mysql
+          envVarKey: MYSQL_PASSWORD
+          property: password
+      - key: PORT
+        value: 8080
