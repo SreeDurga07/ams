@@ -3,13 +3,19 @@
 # Uses environment variables for flexibility across environments
 # ============================================================
 
-# ---- MySQL (default) ----
-db.driver=${DB_DRIVER:com.mysql.cj.jdbc.Driver}
-db.url=${DB_URL:jdbc:mysql://localhost:3306/ams_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+# ---- PostgreSQL (Render Blueprint Compatible) ----
+db.driver=${DB_DRIVER:org.postgresql.Driver}
+db.url=${DB_URL:jdbc:postgresql://localhost:5432/ams_db}
 db.user=${DB_USER:ams_user}
 db.password=${DB_PASSWORD:ams_password}
 
-# ---- Oracle (uncomment and use instead of the MySQL block above) ----
+# ---- MySQL (local development - not supported in Render Blueprint) ----
+# db.driver=${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+# db.url=${DB_URL:jdbc:mysql://localhost:3306/ams_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+# db.user=${DB_USER:ams_user}
+# db.password=${DB_PASSWORD:ams_password}
+
+# ---- Oracle (uncomment and use instead of the PostgreSQL block above) ----
 # db.driver=${DB_DRIVER:oracle.jdbc.driver.OracleDriver}
 # db.url=${DB_URL:jdbc:oracle:thin:@localhost:1521:xe}
 # db.user=${DB_USER:ams_user}
