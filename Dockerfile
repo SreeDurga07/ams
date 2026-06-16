@@ -17,8 +17,7 @@ RUN cd /usr/local/tomcat/lib && \
 RUN mkdir -p /usr/local/tomcat/webapps/ROOT/css \
     /usr/local/tomcat/webapps/ROOT/js \
     /usr/local/tomcat/webapps/ROOT/includes \
-    /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/com/ams/util \
-    /usr/local/tomcat/webapps/ROOT/database
+    /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/com/ams/util
 COPY *.jsp /usr/local/tomcat/webapps/ROOT/
 COPY style.css /usr/local/tomcat/webapps/ROOT/css/style.css
 COPY script.js /usr/local/tomcat/webapps/ROOT/js/script.js
@@ -26,7 +25,6 @@ COPY header.jsp /usr/local/tomcat/webapps/ROOT/includes/header.jsp
 COPY footer.jsp /usr/local/tomcat/webapps/ROOT/includes/footer.jsp
 COPY sidebar.jsp /usr/local/tomcat/webapps/ROOT/includes/sidebar.jsp
 COPY web.xml /usr/local/tomcat/webapps/ROOT/WEB-INF/web.xml
-COPY ams_schema.sql /usr/local/tomcat/webapps/ROOT/database/ams_schema.sql
 COPY DBConnection.java /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/com/ams/util/DBConnection.java
 COPY db.properties.docker /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/db.properties
 COPY ams_schema_postgresql.sql /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/ams_schema_postgresql.sql
