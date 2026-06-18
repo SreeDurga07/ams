@@ -13,9 +13,14 @@
     </welcome-file-list>
 
     <!-- Session timeout (minutes) -->
-    <session-config>
-        <session-timeout>30</session-timeout>
-    </session-config>
+   <session-config>
+  <session-timeout>30</session-timeout>
+  <cookie-config>
+    <http-only>true</http-only>
+    <secure>true</secure>   <!-- Required since Render uses HTTPS -->
+  </cookie-config>
+  <tracking-mode>COOKIE</tracking-mode>
+</session-config>
 
     <!-- Friendly error pages -->
     <error-page>
