@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.net.URLDecoder;
+ClassNotFoundException: com.mysql.cj.jdbc.Driver.
 
 /**
  * Central JDBC connection helper for the Asset Management System.
